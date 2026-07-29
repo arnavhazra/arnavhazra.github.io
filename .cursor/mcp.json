@@ -1,23 +1,25 @@
 {
   "mcpServers": {
     "context7": {
-      "url": "https://mcp.context7.com/mcp",
-      "headers": {
-        "CONTEXT7_API_KEY": "YOUR_FREE_KEY"
-      }
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "envFile": "${workspaceFolder}/.env.local"
     },
     "playwright": {
       "command": "npx",
       "args": ["-y", "@playwright/mcp@latest"]
     },
     "github": {
-      "url": "https://api.githubcopilot.com/mcp/",
-      "headers": {
-        "Authorization": "Bearer YOUR_GITHUB_PAT"
-      }
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "envFile": "${workspaceFolder}/.env.local"
     },
     "vercel": {
       "url": "https://mcp.vercel.com"
+    },
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
     }
   }
 }

@@ -1,6 +1,11 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
+@custom-variant dark (&:is(.dark *));
+
+:root,
+.dark {
   --background: #0a0a0a;
   --foreground: #e8e6e3;
   --muted: #8a8784;
@@ -11,6 +16,20 @@
   --surface: #141312;
   --surface-elevated: #1c1a18;
   --hero-glow: #3d3528;
+  --card: #141312;
+  --card-foreground: #e8e6e3;
+  --popover: #1c1a18;
+  --popover-foreground: #e8e6e3;
+  --primary: #e8e6e3;
+  --primary-foreground: #0a0a0a;
+  --secondary: #1c1a18;
+  --secondary-foreground: #e8e6e3;
+  --muted-foreground: #8a8784;
+  --accent-foreground: #e8e6e3;
+  --destructive: #b45309;
+  --input: #2a2826;
+  --ring: #c9a227;
+  --radius: 0.625rem;
 }
 
 .light {
@@ -24,6 +43,18 @@
   --surface: #ebe7e0;
   --surface-elevated: #ffffff;
   --hero-glow: #d4cfc7;
+  --card: #ebe7e0;
+  --card-foreground: #1a1816;
+  --popover: #ffffff;
+  --popover-foreground: #1a1816;
+  --primary: #1a1816;
+  --primary-foreground: #f5f3ef;
+  --secondary: #ebe7e0;
+  --secondary-foreground: #1a1816;
+  --muted-foreground: #6b6560;
+  --accent-foreground: #1a1816;
+  --input: #ddd8d0;
+  --ring: #9a7b1a;
 }
 
 @theme inline {
@@ -39,6 +70,23 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-fraunces);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
 }
 
 html {
@@ -60,8 +108,6 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -243,5 +289,14 @@ body {
   ::view-transition-old(main-content),
   ::view-transition-new(main-content) {
     animation-duration: 0.01ms;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }
