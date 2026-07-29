@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
+import { CustomCursor } from "@/components/craft/CustomCursor";
 import { LenisProvider } from "@/components/providers/LenisProvider";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { siteConfig } from "@/lib/site";
@@ -87,6 +88,7 @@ export default function RootLayout({
         />
         <ThemeProvider>
           <LenisProvider>
+            <CustomCursor />
             <div aria-hidden className="grain" />
             <Header />
             <main className="view-transition-main flex-1">{children}</main>

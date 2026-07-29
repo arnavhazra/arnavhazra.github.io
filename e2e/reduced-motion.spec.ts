@@ -22,6 +22,6 @@ test.describe("reduced motion", () => {
 
     const firstOption = region.getByRole("button", { name: /Under ₹15L|Standard|City/i }).first();
     await firstOption.click();
-    await expect(region.getByText(/match/i).first()).toBeVisible();
+    await expect(region.getByText(/\/3/).first()).toBeVisible();
   });
 });
