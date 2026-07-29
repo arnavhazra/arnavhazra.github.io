@@ -1,0 +1,46 @@
+---
+title: "Graph-Backed Multi-Hop Retrieval"
+description: "Hybrid BM25 + dense vectors + Neo4j graph traversal with reciprocal rank fusion — retrieval that reasons across hops, not just similarity."
+date: "2026-02-01"
+tags: ["GraphRAG", "Neo4j", "Qdrant", "Python"]
+repo: "https://github.com/arnavhazra/graph-rag-multi-hop"
+featured: true
+span: "2"
+---
+
+## The constraint
+
+Naive retrieve-then-generate breaks on questions that require connecting entities across documents. "Where is DeepMind located?" needs Alice → works at → DeepMind → located in → London — not just the chunk with the highest cosine similarity to the query.
+
+## The approach
+
+I built a hybrid engine combining:
+
+- **Dense retrieval** (Qdrant) for semantic similarity
+- **Structured graph traversal** (Neo4j) for multi-hop entity relationships
+- **Dynamic Cypher generation** from resolved query entities
+- **Cross-encoder reranking** on the union of graph and vector contexts
+
+The relevance score blends vector similarity with path-weighted graph connectivity — tunable via α between semantic and structural signals.
+
+## Pipeline
+
+```
+Document → Chunk → Entity extraction → Neo4j ingest
+                  → Dense embed → Qdrant ingest
+Query → Entity resolution → Cypher paths + Vector search → Rerank → LLM context
+```
+
+## Proof
+
+Benchmarked on the reference corpus:
+
+- Triple extraction: ~42ms per 1KB text
+- 2-hop graph traversal: 3.4ms
+- Reranker throughput: 350 docs/sec
+
+Docker Compose provisions the full stack — Neo4j, Qdrant, and FastAPI — for reproducible evaluation.
+
+## Stack
+
+Python 3.11+, Neo4j 5.12+, Qdrant 1.6+, FastAPI 0.100+

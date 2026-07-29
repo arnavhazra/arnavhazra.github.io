@@ -1,0 +1,42 @@
+---
+title: "Context Engineering as the New Prompt Engineering"
+description: "Seven patterns that cut agent cost 30–50% — window selection, compression, routing, eviction, and caching with real token economics."
+date: "2026-06-15"
+tags: ["Context Engineering", "Agents", "LLM Ops"]
+featured: true
+---
+
+## The shift
+
+Prompt engineering optimized a single call. Context engineering optimizes an **entire agent session** — what enters the window, in what order, for how long, and at what cost. As agentic workflows replace one-shot completions, context becomes the primary cost and quality lever.
+
+## Seven patterns that matter
+
+### 1. Window selection
+Not everything belongs in context. Route queries to specialized sub-agents with minimal, task-specific payloads instead of dumping the full codebase.
+
+### 2. Compression
+Summarize tool outputs before re-injection. A 4KB JSON response becomes a 200-token structured summary without losing actionable fields.
+
+### 3. RAG integration
+Retrieve only what's needed for the current step — not the entire knowledge base. Hybrid retrieval (BM25 + dense + rerank) beats naive top-k on both precision and token count.
+
+### 4. Shared context layers
+Cross-agent state that's read-only for downstream nodes. The Planner writes a spec; the Coder reads it — but doesn't re-read the Planner's reasoning chain.
+
+### 5. Routing
+Send simple tasks to small models (SLMs), complex reasoning to frontier models. Gartner predicts SLM volume will exceed general-purpose LLMs 3× by 2027 — context routing is how you get there without sacrificing quality.
+
+### 6. Eviction
+Remove stale tool results from context after they're consumed. A filesystem listing from step 2 shouldn't occupy tokens in step 8.
+
+### 7. Caching
+Cache embeddings, retrieval results, and compiled knowledge layers. If the document corpus hasn't changed, don't re-retrieve.
+
+## The economics
+
+In production agent workflows I've built, applying all seven patterns typically reduces token consumption **30–50%** per session — not from smaller models alone, but from sending less junk to whatever model you use.
+
+## What this means for teams
+
+If you're still tuning system prompts while your agents burn 100K tokens per task, you're optimizing the wrong layer. Context engineering is the new prompt engineering — and it's measurable in dollars, not vibes.
