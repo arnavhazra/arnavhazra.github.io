@@ -5,7 +5,7 @@ export const siteConfig = {
     "AI data scientist and 2× startup CTO building decision infrastructure. I turn frontier AI research into products that ship.",
   positioning:
     "AI data scientist and 2× startup CTO building decision infrastructure — I turn frontier AI research into products that ship.",
-  url: "https://arnavhazra.com",
+  url: "https://arnavhazra.github.io",
   email: "arnav@neuralnext.co",
   personalEmail: "arnav.haz11@gmail.com",
   links: {
