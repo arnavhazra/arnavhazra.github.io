@@ -1,0 +1,34 @@
+---
+title: "Edge 1.58-Bit Inference"
+description: "Bare-metal C++/CUDA BitNet engine replacing FP multiplies with ternary arithmetic — when a quantized model beats a frontier API on cost and latency."
+date: "2026-03-01"
+tags: ["CUDA", "C++", "Quantization"]
+repo: "https://github.com/arnavhazra/edge-quantized-bitnet"
+featured: true
+---
+
+## The constraint
+
+Frontier LLM APIs are priced per token and bound by network latency. For edge deployments — Jetson-class devices, on-prem inference, high-volume classification — the economics flip: a 1.58-bit model running locally can outperform an API on both cost and tail latency, if the inference engine is tight enough.
+
+## The approach
+
+BitNet b1.58 constrains weights to {-1, 0, 1}, reducing matrix multiplication to integer accumulation with scale-back. I implemented:
+
+- Ternary weight packing into 2-bit uint8 arrays
+- int8 activation quantization for memory bandwidth optimization
+- CUDA shared-memory GEMM kernel with CPU fallback
+- CMake build targeting both Jetson Orin Nano and Apple M3
+
+## Proof
+
+On NVIDIA Jetson Orin Nano (40W), batch-1 inference at 1024×2048:
+
+- **0.88ms latency** at 135.2 GB/s memory bandwidth
+- vs. 1.12ms on Apple M3 Max CPU at equivalent dimensions
+
+The engine is bare-metal — no PyTorch runtime, no Python GIL. This is the SLM-vs-LLM decision made concrete: when your workload fits a quantized model, the API tax disappears.
+
+## Stack
+
+C++17, CUDA 12+, CMake 3.18+

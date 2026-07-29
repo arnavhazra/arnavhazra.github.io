@@ -1,0 +1,41 @@
+---
+title: "Self-Correcting Multi-Agent SWE"
+description: "LangGraph agents with pytest sandboxes and human-in-the-loop gates — what deterministic reflection loops actually buy you in production."
+date: "2026-01-15"
+tags: ["LangGraph", "Agents", "Python"]
+repo: "https://github.com/arnavhazra/autonomous-swe-langgraph"
+featured: true
+span: "2"
+---
+
+## The constraint
+
+Autonomous coding agents fail in predictable ways: they ship code that compiles but doesn't pass tests, skip edge cases the spec implied, and loop until context windows collapse. The question isn't whether agents can write code — it's whether they can **converge** on correct code under bounded iterations.
+
+## The approach
+
+I modeled the system as an explicit finite state machine on LangGraph: Planner → Coder → Tester → Reviewer, with programmatic routing back to Coder when a reflection quality score falls below threshold. Each agent operates inside sandboxed pytest environments with human-in-the-loop checkpoints before merge.
+
+The routing function is deterministic — not vibes-based:
+
+```
+Reviewer → Coder   if quality < 1.0 and iterations < I_max
+Reviewer → End     otherwise
+```
+
+This guarantees convergence or safe halt within a fixed iteration budget.
+
+## What shipped
+
+- Four specialized agent nodes with typed state payloads (code diffs + verification logs)
+- Pytest sandbox integration for every code revision cycle
+- Human approval gates before final output
+- Documented self-correction case study: recursive implementation flagged by Reviewer, revised with proper error handling, passes validation on second pass
+
+## Proof
+
+The graph topology is explicit and testable — not a black-box prompt chain. For teams evaluating agentic SWE, the measurable win is **bounded iteration with verifiable exit conditions**, not open-ended "keep trying until it works."
+
+## Stack
+
+Python 3.10+, LangGraph 0.0.10+, Pytest 7+
