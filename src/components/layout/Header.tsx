@@ -22,11 +22,11 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <header className="sticky top-0 z-40 border-b border-border/40 bg-background/55 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <Link
           href="/"
-          className="font-mono text-sm tracking-tight text-foreground transition hover:text-accent-cta"
+          className="font-mono text-xs tracking-[0.08em] text-foreground/90 transition hover:text-accent-cta"
         >
           {siteConfig.name}
         </Link>

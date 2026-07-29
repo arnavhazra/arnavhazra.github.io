@@ -37,36 +37,37 @@ export function KineticHeadline() {
     const line2Chars = line2Ref.current?.querySelectorAll("span") ?? [];
 
     const ctx = gsap.context(() => {
-      gsap.set([...line1Chars, ...line2Chars], { opacity: 0, y: 28 });
-      gsap.set(subRef.current, { opacity: 0, y: 16 });
+      gsap.set([...line1Chars, ...line2Chars], { opacity: 0, y: 36 });
+      gsap.set(subRef.current, { opacity: 0, y: 12 });
 
       gsap
         .timeline({ defaults: { ease: "power3.out" } })
         .to(line1Chars, {
           opacity: 1,
           y: 0,
-          duration: 0.7,
-          stagger: 0.025,
+          duration: 0.85,
+          stagger: 0.028,
         })
         .to(
           line2Chars,
           {
             opacity: 1,
             y: 0,
-            duration: 0.65,
-            stagger: 0.018,
+            duration: 0.7,
+            stagger: 0.016,
           },
-          "-=0.35",
+          "-=0.4",
         )
-        .to(subRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.2");
+        .to(subRef.current, { opacity: 1, y: 0, duration: 0.55 }, "-=0.25");
 
       gsap.to(line1Ref.current, {
-        fontVariationSettings: '"wght" 650, "SOFT" 25, "WONK" 1',
+        fontVariationSettings: '"wght" 700, "opsz" 144, "SOFT" 40, "WONK" 1',
+        letterSpacing: "-0.04em",
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
           end: "bottom top",
-          scrub: 1.2,
+          scrub: 1.1,
         },
       });
     }, containerRef);
@@ -75,21 +76,25 @@ export function KineticHeadline() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative space-y-3">
-      <h1 className="font-display text-5xl leading-[1.02] tracking-tight md:text-7xl lg:text-[5.5rem]">
-        <span ref={line1Ref} className="block">
+    <div ref={containerRef} className="relative">
+      <h1 className="font-display text-[clamp(3.25rem,11vw,9rem)] leading-[0.92] tracking-[-0.03em]">
+        <span
+          ref={line1Ref}
+          className="block"
+          style={{ fontVariationSettings: '"wght" 500, "opsz" 96, "SOFT" 0' }}
+        >
           {splitText(siteConfig.name)}
         </span>
         <span
           ref={line2Ref}
-          className="mt-3 block text-muted md:mt-5 md:text-4xl lg:text-5xl"
+          className="mt-4 block max-w-[18ch] text-[clamp(1.35rem,3.4vw,2.75rem)] leading-[1.1] tracking-[-0.02em] text-muted md:mt-6"
         >
           {splitText(siteConfig.tagline)}
         </span>
       </h1>
       <p
         ref={subRef}
-        className="max-w-2xl pt-4 font-mono text-sm leading-relaxed text-muted md:text-base"
+        className="mt-6 max-w-md font-mono text-xs leading-relaxed text-muted md:mt-8 md:text-sm"
       >
         {siteConfig.positioning}
       </p>

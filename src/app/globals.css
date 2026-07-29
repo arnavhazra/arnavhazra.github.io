@@ -139,12 +139,12 @@ body {
 .hero-gradient::before {
   content: "";
   position: absolute;
-  inset: -20% -10%;
+  inset: -30% -15%;
   background:
-    radial-gradient(ellipse 70% 55% at 50% -5%, color-mix(in srgb, var(--hero-glow) 55%, transparent), transparent),
-    radial-gradient(ellipse 45% 35% at 85% 15%, color-mix(in srgb, var(--accent-cta) 12%, transparent), transparent),
-    radial-gradient(ellipse 40% 30% at 10% 40%, color-mix(in srgb, var(--accent) 8%, transparent), transparent);
-  animation: mesh-drift 18s ease-in-out infinite alternate;
+    radial-gradient(ellipse 80% 60% at 18% 0%, color-mix(in srgb, var(--hero-glow) 70%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 92% 18%, color-mix(in srgb, var(--accent-cta) 16%, transparent), transparent 65%),
+    radial-gradient(ellipse 45% 35% at 70% 85%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 60%);
+  animation: mesh-drift 22s ease-in-out infinite alternate;
   pointer-events: none;
 }
 
@@ -153,8 +153,12 @@ body {
     transform: translate(0, 0) scale(1);
   }
   100% {
-    transform: translate(2%, 3%) scale(1.04);
+    transform: translate(3%, 4%) scale(1.06);
   }
+}
+
+.editorial-rule {
+  border-color: color-mix(in srgb, var(--border) 80%, transparent);
 }
 
 @media (prefers-reduced-motion: reduce) {

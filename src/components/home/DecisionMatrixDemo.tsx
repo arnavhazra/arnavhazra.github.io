@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "motion/react";
+import { motion, useReducedMotion } from "motion/react";
 
 const axes = [
   { id: "budget", label: "Budget", options: ["Under ₹15L", "₹15–25L", "Premium"] },
@@ -17,6 +17,8 @@ const catalog = [
 ];
 
 export function DecisionMatrixDemo() {
+  const prefersReduced = useReducedMotion();
+
   const [selection, setSelection] = useState<Record<string, number>>({
     budget: 1,
     safety: 2,
@@ -38,30 +40,28 @@ export function DecisionMatrixDemo() {
   return (
     <section
       aria-label="Interactive decision matrix demo"
-      className="card-glass rounded-3xl border border-border p-6 md:p-8"
+      className="border-t border-border/70 pt-6 md:border-t-0 md:border-l md:pl-8 md:pt-0"
     >
-      <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-            Live proof · decision infrastructure
-          </p>
-          <h2 className="mt-2 font-display text-2xl tracking-tight md:text-3xl">
-            Filter a catalog like ThisVersus does
-          </h2>
-        </div>
-        <p className="max-w-sm text-sm text-muted">
-          Three axes, four options — the site itself is a small decision engine.
-          No LLM required.
+      <div className="mb-6">
+        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted">
+          Live proof
         </p>
+        <h2 className="mt-2 font-display text-xl tracking-tight md:text-2xl">
+          Filter like ThisVersus
+        </h2>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="space-y-5">
         {axes.map((axis) => (
-          <fieldset key={axis.id} className="space-y-2">
-            <legend className="font-mono text-[10px] uppercase tracking-widest text-accent-cta">
+          <fieldset key={axis.id}>
+            <legend className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted">
               {axis.label}
             </legend>
-            <div className="flex flex-wrap gap-2">
+            <div
+              className="mt-2 flex flex-wrap gap-x-4 gap-y-2"
+              role="group"
+              aria-label={axis.label}
+            >
               {axis.options.map((option, index) => {
                 const active = selection[axis.id] === index;
                 return (
@@ -71,13 +71,19 @@ export function DecisionMatrixDemo() {
                     onClick={() =>
                       setSelection((prev) => ({ ...prev, [axis.id]: index }))
                     }
-                    className={`rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-wider transition ${
+                    className={`relative font-mono text-[11px] uppercase tracking-wider transition ${
                       active
-                        ? "border-accent-cta bg-accent-cta/10 text-accent-cta"
-                        : "border-border text-muted hover:border-foreground/30 hover:text-foreground"
+                        ? "text-accent-cta"
+                        : "text-muted hover:text-foreground"
                     }`}
                   >
                     {option}
+                    <span
+                      aria-hidden
+                      className={`absolute -bottom-1 left-0 h-px w-full transition ${
+                        active ? "bg-accent-cta" : "bg-transparent"
+                      }`}
+                    />
                   </button>
                 );
               })}
@@ -86,40 +92,39 @@ export function DecisionMatrixDemo() {
         ))}
       </div>
 
-      <div className="mt-8 grid gap-3 md:grid-cols-2">
+      <ol className="mt-8 space-y-0 border-t border-border/60">
         {ranked.map((item, index) => (
-          <motion.div
+          <motion.li
             key={item.name}
-            layout
-            className="rounded-xl border border-border bg-surface/80 p-4"
+            layout={!prefersReduced}
+            className="flex items-center justify-between gap-4 border-b border-border/50 py-3"
           >
-            <div className="flex items-center justify-between gap-4">
-              <div>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
-                  Rank {index + 1}
-                </p>
-                <p className="mt-1 font-medium">{item.name}</p>
-              </div>
-              <div className="text-right">
-                <p className="font-mono text-xs text-accent-cta">
-                  {item.match}/3 match
-                </p>
-                <p className="font-mono text-[10px] text-muted">
-                  score {item.score}
-                </p>
+            <div className="min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-widest text-muted">
+                {String(index + 1).padStart(2, "0")}
+              </p>
+              <p className="mt-0.5 truncate font-medium">{item.name}</p>
+            </div>
+            <div className="shrink-0 text-right">
+              <p className="font-mono text-xs text-accent-cta">
+                {item.match}/3 match
+              </p>
+              <div className="mt-1.5 h-px w-16 overflow-hidden bg-border">
+                <motion.div
+                  className="h-full bg-accent-cta"
+                  initial={false}
+                  animate={{ width: `${item.score}%` }}
+                  transition={
+                    prefersReduced
+                      ? { duration: 0 }
+                      : { type: "spring", stiffness: 320, damping: 34 }
+                  }
+                />
               </div>
             </div>
-            <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-border">
-              <motion.div
-                className="h-full rounded-full bg-accent-cta"
-                initial={false}
-                animate={{ width: `${item.score}%` }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            </div>
-          </motion.div>
+          </motion.li>
         ))}
-      </div>
+      </ol>
     </section>
   );
 }
