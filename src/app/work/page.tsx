@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Work",
-  description: `Case studies and technical projects by ${siteConfig.name}.`,
+  description: `Systems built and shipped by ${siteConfig.name} — decision infrastructure, agents, retrieval, and edge inference.`,
 };
 
 export default function WorkPage() {
@@ -18,16 +18,16 @@ export default function WorkPage() {
         Work
       </p>
       <h1 className="mt-2 max-w-2xl font-display text-4xl tracking-tight md:text-5xl">
-        Systems I&apos;ve designed, built, and shipped
+        Systems with numbers attached
       </h1>
       <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted">
-        Deep case studies from open-source repositories and founder work.
-        Each one follows the same arc: a real constraint, a technical bet, and
-        measurable proof.
+        Five case studies from founder work and open source. Each one names a
+        real constraint, the technical bet, and the measurement that made it
+        real.
       </p>
 
       <div className="mt-14">
-        <WorkGrid items={items} />
+        <WorkGrid items={items} featuredFirst />
       </div>
     </div>
   );

@@ -1,45 +1,39 @@
 ---
 title: "Graph-Backed Multi-Hop Retrieval"
-description: "Hybrid BM25 + dense vectors + Neo4j graph traversal with reciprocal rank fusion — retrieval that reasons across hops, not just similarity."
+description: "Neo4j graph traversal plus Qdrant dense search — 3.4ms two-hop latency when cosine similarity alone cannot connect the dots."
 date: "2026-02-01"
 tags: ["GraphRAG", "Neo4j", "Qdrant", "Python"]
 repo: "https://github.com/arnavhazra/graph-rag-multi-hop"
+liveUrl: "https://github.com/arnavhazra/graph-rag-multi-hop"
+metric: "3.4ms · 2-hop traversal"
+role: "builder"
 featured: true
 span: "2"
 ---
 
-## The constraint
+## The failure mode of flat retrieval
 
-Naive retrieve-then-generate breaks on questions that require connecting entities across documents. "Where is DeepMind located?" needs Alice → works at → DeepMind → located in → London — not just the chunk with the highest cosine similarity to the query.
+"Where is DeepMind located?" is not a similarity problem. It is a path problem: Alice → works at → DeepMind → located in → London. Naive top-k retrieval returns the wrong chunk with high confidence.
 
-## The approach
+## What I built
 
-I built a hybrid engine combining:
-
-- **Dense retrieval** (Qdrant) for semantic similarity
-- **Structured graph traversal** (Neo4j) for multi-hop entity relationships
-- **Dynamic Cypher generation** from resolved query entities
-- **Cross-encoder reranking** on the union of graph and vector contexts
-
-The relevance score blends vector similarity with path-weighted graph connectivity — tunable via α between semantic and structural signals.
-
-## Pipeline
+A hybrid engine that combines dense vectors (Qdrant), structured graph traversal (Neo4j), dynamic Cypher generation from resolved entities, and cross-encoder reranking on the union of both signals.
 
 ```
-Document → Chunk → Entity extraction → Neo4j ingest
-                  → Dense embed → Qdrant ingest
-Query → Entity resolution → Cypher paths + Vector search → Rerank → LLM context
+Document → entities → Neo4j
+         → embeddings → Qdrant
+Query → paths + vectors → rerank → LLM context
 ```
 
-## Proof
+Relevance blends semantic similarity with path-weighted graph connectivity — tunable, not magic.
 
-Benchmarked on the reference corpus:
+## Measured on the reference corpus
 
 - Triple extraction: ~42ms per 1KB text
-- 2-hop graph traversal: 3.4ms
+- Two-hop graph traversal: **3.4ms**
 - Reranker throughput: 350 docs/sec
 
-Docker Compose provisions the full stack — Neo4j, Qdrant, and FastAPI — for reproducible evaluation.
+Docker Compose provisions Neo4j, Qdrant, and FastAPI together — reproducible, not a notebook demo.
 
 ## Stack
 

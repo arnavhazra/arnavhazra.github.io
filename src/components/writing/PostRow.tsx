@@ -17,7 +17,7 @@ export function PostRow({ slug, title, description, date, basePath }: PostRowPro
           <h2 className="mt-2 font-display text-2xl tracking-tight">
             <Link
               href={`/${basePath}/${slug}`}
-              className="transition hover:text-accent"
+              className="transition hover:text-accent-cta"
             >
               {title}
             </Link>
@@ -26,7 +26,7 @@ export function PostRow({ slug, title, description, date, basePath }: PostRowPro
         </div>
         <Link
           href={`/${basePath}/${slug}`}
-          className="inline-flex shrink-0 items-center gap-1 font-mono text-xs uppercase tracking-widest text-muted transition group-hover:text-accent"
+          className="inline-flex shrink-0 items-center gap-1 font-mono text-xs uppercase tracking-widest text-muted transition group-hover:text-accent-cta"
           aria-label={`Read ${title}`}
         >
           Read

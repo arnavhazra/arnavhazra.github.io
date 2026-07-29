@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `Founder narrative and timeline for ${siteConfig.name}.`,
+  description: siteConfig.geoDescription,
 };
 
 export default function AboutPage() {
@@ -16,40 +16,39 @@ export default function AboutPage() {
         About
       </p>
       <h1 className="mt-2 max-w-3xl font-display text-4xl tracking-tight md:text-5xl">
-        Two startups, one through-line: turn research into systems people can
-        trust.
+        I build systems that turn ambiguous choices into verifiable outcomes.
       </h1>
 
       <div className="mt-10 flex flex-col gap-10 md:flex-row md:items-start">
         <Image
           src="/images/me.jpg"
-          alt="Arnav Hazra"
+          alt="Arnav Hazra, AI startup CTO and applied AI engineer"
           width={160}
           height={160}
           className="h-40 w-40 shrink-0 rounded-2xl border border-border object-cover"
           priority
         />
         <div className="prose-site max-w-2xl">
-        <p>
-          I&apos;m an applied AI engineer and two-time startup CTO. At Neural
-          Next, I co-founded ThisVersus — decision infrastructure for
-          high-consideration purchases. At Data Pixel, I build enterprise data
-          literacy programs for teams navigating the gap between AI hype and
-          operational reality.
-        </p>
-        <p>
-          Before founding, I shipped across the stack: CNN-powered iOS apps in
-          Tokyo, LangGraph agent pipelines, hybrid GraphRAG engines, and
-          bare-metal CUDA inference for sub-bit quantized models. The common
-          thread isn&apos;t a technology — it&apos;s a bias toward verifiable
-          systems over demo-grade prototypes.
-        </p>
-        <p>
-          Originally from Pune, India. Studied at Minerva University across San
-          Francisco, Hyderabad, London, and Berlin. Engineering DNA from teams
-          at SoftBank, BNY Mellon, and IIM Bangalore informs how I think about
-          enterprise-grade delivery.
-        </p>
+          <p>
+            I am Arnav Hazra — two-time startup CTO and applied AI engineer.
+            At Neural Next I co-founded ThisVersus, decision infrastructure for
+            purchases where getting it wrong is expensive. At Data Pixel I build
+            enterprise data literacy for teams that need to ship AI, not slide
+            decks about it.
+          </p>
+          <p>
+            Before founding, I shipped where the constraints were real: CNN
+            inference on iOS in Tokyo, LangGraph loops with pytest sandboxes,
+            hybrid GraphRAG at 3.4ms two-hop latency, bare-metal BitNet at
+            0.88ms on Jetson. The through-line is not a technology stack — it
+            is a refusal to ship demos that cannot be measured.
+          </p>
+          <p>
+            Originally from Pune. Studied at Minerva University across San
+            Francisco, Hyderabad, London, and Berlin. Engineering experience from
+            SoftBank, BNY Mellon, and IIM Bangalore shapes how I think about
+            enterprise-grade delivery.
+          </p>
         </div>
       </div>
 

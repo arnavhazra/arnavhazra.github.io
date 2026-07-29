@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { resumeData } from "@/lib/resume-data";
 import { siteConfig } from "@/lib/site";
@@ -13,22 +14,33 @@ export default function ResumePage() {
   return (
     <div className="mx-auto max-w-3xl px-6 py-20 md:py-28">
       <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-muted">
-        Resume · ATS layer
+        Resume · structured for ATS and recruiters
       </p>
       <h1 className="mt-2 font-display text-4xl tracking-tight">{siteConfig.name}</h1>
       <p className="mt-2 font-mono text-sm text-muted">
-        AI Startup CTO (2×) · Applied AI · Minerva University
+        Co-founder & CTO · Applied AI · Minerva University
+      </p>
+      <p className="mt-4 max-w-xl text-sm text-muted">
+        Dense keyword layer only — narrative context lives on{" "}
+        <Link href="/about" className="font-medium text-foreground underline underline-offset-2">
+          About
+        </Link>{" "}
+        and{" "}
+        <Link href="/work" className="font-medium text-foreground underline underline-offset-2">
+          Work
+        </Link>
+        .
       </p>
 
       <section className="mt-12">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-accent-cta">
           Summary
         </h2>
         <p className="mt-3 text-sm leading-relaxed">{resumeData.summary}</p>
       </section>
 
       <section className="mt-10">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-accent-cta">
           Skills
         </h2>
         <p className="mt-3 text-sm leading-relaxed">
@@ -37,7 +49,7 @@ export default function ResumePage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-accent-cta">
           Experience
         </h2>
         <ul className="mt-4 space-y-8">
@@ -59,7 +71,7 @@ export default function ResumePage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-accent-cta">
           Education
         </h2>
         <ul className="mt-4 space-y-4">
@@ -75,7 +87,7 @@ export default function ResumePage() {
       </section>
 
       <section className="mt-10">
-        <h2 className="font-mono text-xs uppercase tracking-widest text-accent">
+        <h2 className="font-mono text-xs uppercase tracking-widest text-accent-cta">
           Open Source & Technical Projects
         </h2>
         <ul className="mt-4 list-disc space-y-1 pl-5 text-sm">
