@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
 
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { siteConfig } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
@@ -21,46 +22,52 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
+    <header className="sticky top-0 z-40 border-b border-border/40 bg-background/55 backdrop-blur-md">
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <Link
           href="/"
-          className="font-mono text-sm tracking-tight text-foreground transition hover:text-accent"
+          className="font-mono text-xs tracking-[0.08em] text-foreground/90 transition hover:text-accent-cta"
         >
           {siteConfig.name}
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Main">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "font-mono text-xs uppercase tracking-widest transition",
-                pathname === item.href || pathname.startsWith(`${item.href}/`)
-                  ? "text-accent"
-                  : "text-muted hover:text-foreground",
-              )}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="hidden items-center gap-6 md:flex">
+          <nav className="flex items-center gap-8" aria-label="Main">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "font-mono text-xs uppercase tracking-widest transition",
+                  pathname === item.href || pathname.startsWith(`${item.href}/`)
+                    ? "text-accent-cta"
+                    : "text-muted hover:text-foreground",
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+          <ThemeToggle />
+        </div>
 
-        <button
-          type="button"
-          className="md:hidden text-muted hover:text-foreground"
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          onClick={() => setOpen((v) => !v)}
-        >
-          {open ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        <div className="flex items-center gap-3 md:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            className="text-muted hover:text-foreground"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </div>
 
       {open ? (
         <nav
-          className="border-t border-border/60 bg-background px-6 py-4 md:hidden"
+          className="border-t border-border/60 bg-background/95 px-6 py-4 backdrop-blur-xl md:hidden"
           aria-label="Mobile"
         >
           <ul className="flex flex-col gap-4">

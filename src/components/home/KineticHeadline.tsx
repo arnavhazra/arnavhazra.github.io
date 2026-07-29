@@ -8,10 +8,23 @@ import { siteConfig } from "@/lib/site";
 
 gsap.registerPlugin(ScrollTrigger);
 
+function splitText(text: string) {
+  return text.split("").map((char, i) => (
+    <span
+      key={`${char}-${i}`}
+      className="inline-block will-change-transform"
+      style={{ whiteSpace: char === " " ? "pre" : undefined }}
+    >
+      {char === " " ? "\u00A0" : char}
+    </span>
+  ));
+}
+
 export function KineticHeadline() {
   const containerRef = useRef<HTMLDivElement>(null);
   const line1Ref = useRef<HTMLSpanElement>(null);
   const line2Ref = useRef<HTMLSpanElement>(null);
+  const subRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
     const prefersReducedMotion = window.matchMedia(
@@ -20,55 +33,69 @@ export function KineticHeadline() {
 
     if (prefersReducedMotion || !containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        line1Ref.current,
-        { fontVariationSettings: '"wght" 300', opacity: 0.6 },
-        {
-          fontVariationSettings: '"wght" 700',
-          opacity: 1,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 80%",
-            end: "bottom 20%",
-            scrub: 1,
-          },
-        },
-      );
+    const line1Chars = line1Ref.current?.querySelectorAll("span") ?? [];
+    const line2Chars = line2Ref.current?.querySelectorAll("span") ?? [];
 
-      gsap.fromTo(
-        line2Ref.current,
-        { x: 40, opacity: 0.4 },
-        {
-          x: 0,
+    const ctx = gsap.context(() => {
+      gsap.set([...line1Chars, ...line2Chars], { opacity: 0, y: 36 });
+      gsap.set(subRef.current, { opacity: 0, y: 12 });
+
+      gsap
+        .timeline({ defaults: { ease: "power3.out" } })
+        .to(line1Chars, {
           opacity: 1,
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top 70%",
-            end: "bottom 30%",
-            scrub: 1.2,
+          y: 0,
+          duration: 0.85,
+          stagger: 0.028,
+        })
+        .to(
+          line2Chars,
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.016,
           },
+          "-=0.4",
+        )
+        .to(subRef.current, { opacity: 1, y: 0, duration: 0.55 }, "-=0.25");
+
+      gsap.to(line1Ref.current, {
+        fontVariationSettings: '"wght" 700, "opsz" 144, "SOFT" 40, "WONK" 1',
+        letterSpacing: "-0.04em",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.1,
         },
-      );
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
 
   return (
-    <div ref={containerRef} className="space-y-2">
-      <h1 className="font-display text-5xl leading-[1.05] tracking-tight md:text-7xl lg:text-8xl">
-        <span ref={line1Ref} className="block">
-          Arnav Hazra
+    <div ref={containerRef} className="relative">
+      <h1 className="font-display text-[clamp(3.25rem,11vw,9rem)] leading-[0.92] tracking-[-0.03em]">
+        <span
+          ref={line1Ref}
+          className="block"
+          style={{ fontVariationSettings: '"wght" 500, "opsz" 96, "SOFT" 0' }}
+        >
+          {splitText(siteConfig.name)}
         </span>
         <span
           ref={line2Ref}
-          className="mt-2 block text-muted md:mt-4 md:text-5xl lg:text-6xl"
+          className="mt-4 block max-w-[18ch] text-[clamp(1.35rem,3.4vw,2.75rem)] leading-[1.1] tracking-[-0.02em] text-muted md:mt-6"
         >
-          builds systems that decide.
+          {splitText(siteConfig.tagline)}
         </span>
       </h1>
-      <p className="max-w-2xl pt-6 font-mono text-sm leading-relaxed text-muted md:text-base">
+      <p
+        ref={subRef}
+        className="mt-6 max-w-md font-mono text-xs leading-relaxed text-muted md:mt-8 md:text-sm"
+      >
         {siteConfig.positioning}
       </p>
     </div>

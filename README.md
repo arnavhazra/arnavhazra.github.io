@@ -30,9 +30,25 @@ npm run build    # production build
 npm run lint     # ESLint
 ```
 
-## Cursor MCP setup
+## Cursor MCP setup (SOTA design stack)
 
-Copy `.cursor/mcp.json` and authenticate Context7, GitHub, and Vercel in **Settings → Tools & MCP**. See `.cursor/rules/personal-site.md` for design and voice constraints.
+Full lean MCP stack for award-tier builds — **free tier only**. See [`.cursor/MCP-SETUP.md`](.cursor/MCP-SETUP.md) for paid-tool replacements.
+
+```bash
+./.cursor/setup-mcp.sh          # installs Context7, Playwright, GitHub, shadcn MCP
+```
+
+| Server | Role |
+|---|---|
+| Context7 | Live Motion/GSAP/Next.js docs |
+| Playwright | Visual QA + browser automation |
+| GitHub | README mining for case studies |
+| Vercel | Deploy + preview (OAuth in Cursor Settings) |
+| shadcn | Component registry + design tokens |
+
+Authenticate **Vercel** in Cursor → Settings → Tools & MCP. Copy `.env.example` → `.env.local` for Context7/GitHub keys (auto-filled by setup script).
+
+Design and voice constraints: [`.cursor/rules/personal-site.md`](.cursor/rules/personal-site.md)
 
 ## Migration note
 
