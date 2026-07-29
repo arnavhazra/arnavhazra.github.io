@@ -41,7 +41,7 @@ export default async function WritingDetailPage({ params }: PageProps) {
     <article className="mx-auto max-w-3xl px-6 py-20 md:py-28">
       <Link
         href="/writing"
-        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted transition hover:text-accent"
+        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted transition hover:text-accent-cta"
       >
         <ArrowLeft size={14} />
         All writing

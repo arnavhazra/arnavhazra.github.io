@@ -1,49 +1,43 @@
 ---
 title: "Beyond Retrieve-Then-Generate"
-description: "Building a compilation-stage knowledge layer for agents — why hybrid retrieval plus pre-compiled knowledge beats per-session RAG at scale."
+description: "Why I built a compilation-stage knowledge layer for agents — and when hybrid GraphRAG still wins over pre-compiled graphs."
 date: "2026-06-20"
 tags: ["RAG", "GraphRAG", "Agents"]
 featured: true
 ---
 
-## The debate
+Enterprise intent to adopt hybrid retrieval tripled in a single quarter last year. At the same time, a new thesis emerged: per-session RAG is ending for agentic AI — replaced by knowledge pre-compiled for agent tasks.
 
-Enterprise RAG adoption is shifting fast. Hybrid retrieval (BM25 + dense + reciprocal rank fusion + cross-encoder reranking) tripled in intent-to-adopt over a single quarter in Q1 2026. Simultaneously, a new thesis emerged: **per-session RAG is ending for agentic AI** — replaced by a compilation-stage knowledge layer that pre-compiles domain knowledge for agent tasks.
+Both can be true. Here is how I think about it after building [graph-rag-multi-hop](https://github.com/arnavhazra/graph-rag-multi-hop).
 
-Both can be true. Here's how.
+## Where per-session RAG breaks
 
-## Retrieve-then-generate fails agents
-
-Agents don't ask one question — they chain ten. Each hop re-retrieves from scratch, re-embeds, re-ranks. Latency compounds. Context windows fill with redundant chunks. And multi-hop questions ("Where is the company Alice works at located?") break naive similarity search entirely.
+Agents chain ten queries, not one. Each hop re-retrieves, re-embeds, re-ranks. Latency compounds. Context windows fill with redundant chunks. Multi-hop questions break naive similarity entirely.
 
 ## The compilation-stage alternative
 
-Instead of retrieving per query, **pre-compile** knowledge into structures agents can traverse:
+Pre-compile domain knowledge into structures agents traverse:
 
 - Entity-relationship graphs (Neo4j) for multi-hop reasoning
-- Dense vector indexes (Qdrant) for semantic fallback
+- Dense indexes (Qdrant) for semantic fallback
 - Rerankers on the union of both signals
 
-The agent doesn't retrieve — it **navigates** a pre-built knowledge layer. Retrieval becomes a lookup, not a search.
+The agent navigates a knowledge layer; retrieval becomes lookup, not search.
 
-## Hybrid is the bridge
+## Hybrid is the bridge I shipped
 
-My [graph-rag-multi-hop](https://github.com/arnavhazra/graph-rag-multi-hop) engine implements this bridge:
+1. Ingest → extract entities → graph + vector stores
+2. Query → resolve entities → Cypher paths + vector search
+3. Union → rerank → LLM window
 
-1. Ingest documents → extract entities and triples → graph + vector stores
-2. Query → resolve entities → generate Cypher paths + vector search
-3. Union contexts → cross-encoder rerank → LLM window
-
-Benchmark: 2-hop graph traversal in 3.4ms. Triple extraction at ~42ms/KB. This isn't theoretical — it's a Docker Compose away from reproducible evaluation.
+Benchmark on my engine: **2-hop graph traversal in 3.4ms**. Triple extraction at ~42ms/KB. Docker Compose away from reproducible evaluation.
 
 ## When to compile vs. retrieve
 
-| Pattern | Best for | Cost profile |
-|---|---|---|
-| Per-session RAG | Small, dynamic corpora | High per-query |
-| Compilation-stage | Stable domain knowledge | High upfront, low per-query |
-| Hybrid (graph + vector) | Multi-hop + semantic | Medium, best precision |
+| Pattern | Best for |
+|---|---|
+| Per-session RAG | Small, dynamic corpora |
+| Compilation-stage | Stable domain knowledge |
+| Hybrid graph + vector | Multi-hop + semantic precision |
 
-## The implication
-
-If you're building agents on enterprise knowledge, stop asking "which vector DB?" and start asking "what knowledge structures do my agent tasks actually need?" The answer is usually a graph — with vectors as fallback, not foundation.
+If you are building agents on enterprise knowledge, the question is not "which vector DB?" — it is "what structures do my agent tasks actually need?"

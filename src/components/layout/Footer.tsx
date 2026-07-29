@@ -11,14 +11,15 @@ export function Footer() {
             {siteConfig.name}
           </p>
           <p className="mt-2 max-w-md text-sm text-muted">
-            Building decision infrastructure and agentic systems. Pune → San Francisco → everywhere.
+            Decision infrastructure, agentic systems, and the engineering to make
+            both production-grade. Pune → San Francisco → everywhere.
           </p>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-6">
           <Link
             href={siteConfig.links.github}
-            className="font-mono text-xs text-muted transition hover:text-accent"
+            className="font-mono text-xs text-muted transition hover:text-accent-cta"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -26,7 +27,7 @@ export function Footer() {
           </Link>
           <Link
             href={siteConfig.links.linkedin}
-            className="font-mono text-xs text-muted transition hover:text-accent"
+            className="font-mono text-xs text-muted transition hover:text-accent-cta"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -34,7 +35,7 @@ export function Footer() {
           </Link>
           <Link
             href={`mailto:${siteConfig.email}`}
-            className="font-mono text-xs text-muted transition hover:text-accent"
+            className="font-mono text-xs text-muted transition hover:text-accent-cta"
           >
             {siteConfig.email}
           </Link>

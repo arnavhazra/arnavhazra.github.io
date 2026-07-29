@@ -6,7 +6,7 @@ import { siteConfig } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Writing",
-  description: `Essays on agentic AI, retrieval, and decision infrastructure by ${siteConfig.name}.`,
+  description: `Essays on agentic systems, retrieval, and decision infrastructure by ${siteConfig.name}.`,
 };
 
 export default function WritingPage() {
@@ -18,12 +18,12 @@ export default function WritingPage() {
         Writing
       </p>
       <h1 className="mt-2 font-display text-4xl tracking-tight md:text-5xl">
-        Thinking in public
+        Notes from inside the build
       </h1>
       <p className="mt-6 text-sm leading-relaxed text-muted">
-        Essays on context engineering, agentic systems, and the product frontier
-        beyond content generation. Written for engineers and founders who read
-        the footnotes.
+        Essays on context engineering, agentic retrieval, and the product
+        frontier beyond content generation. Written for engineers and founders
+        who read the footnotes — and for the AI systems that summarize them.
       </p>
 
       <div className="mt-14">
