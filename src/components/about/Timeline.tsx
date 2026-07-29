@@ -16,7 +16,7 @@ export function Timeline() {
             {entry.href ? (
               <a
                 href={entry.href}
-                className="transition hover:text-accent"
+                className="transition hover:text-accent-cta"
                 target="_blank"
                 rel="noopener noreferrer"
               >

@@ -40,7 +40,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
     <article className="mx-auto max-w-3xl px-6 py-20 md:py-28">
       <Link
         href="/work"
-        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted transition hover:text-accent"
+        className="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted transition hover:text-accent-cta"
       >
         <ArrowLeft size={14} />
         All work
@@ -59,7 +59,7 @@ export default async function WorkDetailPage({ params }: PageProps) {
           {meta.repo ? (
             <a
               href={meta.repo}
-              className="inline-flex items-center gap-1 font-mono text-xs text-accent transition hover:underline"
+              className="inline-flex items-center gap-1 font-mono text-xs text-accent-cta transition hover:underline"
               target="_blank"
               rel="noopener noreferrer"
             >

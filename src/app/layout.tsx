@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import { Instrument_Serif } from "next/font/google";
+import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { LenisProvider } from "@/components/providers/LenisProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { siteConfig } from "@/lib/site";
 
 import "./globals.css";
@@ -20,10 +20,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
-  weight: "400",
+  axes: ["SOFT", "WONK", "opsz"],
 });
 
 export const metadata: Metadata = {
@@ -55,6 +55,7 @@ const personJsonLd = {
   "@type": "Person",
   name: siteConfig.name,
   url: siteConfig.url,
+  description: siteConfig.geoDescription,
   jobTitle: "Co-founder & CTO",
   worksFor: {
     "@type": "Organization",
@@ -76,19 +77,22 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${instrumentSerif.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
-        <LenisProvider>
-          <div aria-hidden className="grain" />
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-        </LenisProvider>
+        <ThemeProvider>
+          <LenisProvider>
+            <div aria-hidden className="grain" />
+            <Header />
+            <main className="view-transition-main flex-1">{children}</main>
+            <Footer />
+          </LenisProvider>
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

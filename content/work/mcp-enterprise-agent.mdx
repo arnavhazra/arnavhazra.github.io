@@ -1,35 +1,34 @@
 ---
 title: "Enterprise MCP Security Surface"
-description: "OAuth-secured MCP server with path-boundary sandboxing, read-only PostgreSQL, and OpenTelemetry — what 10,000-server ecosystems need at the trust boundary."
+description: "Path-boundary sandboxing at 0.05ms per check — what a 10,000-server MCP ecosystem needs at the trust boundary."
 date: "2026-02-20"
 tags: ["MCP", "TypeScript", "Security"]
 repo: "https://github.com/arnavhazra/mcp-enterprise-agent"
+liveUrl: "https://github.com/arnavhazra/mcp-enterprise-agent"
+metric: "0.05ms · path assertion"
+role: "builder"
 featured: true
 ---
 
-## The constraint
+## Every MCP server is a trust boundary
 
-Model Context Protocol servers grant LLM agents access to real enterprise assets — databases, filesystems, internal APIs. Every server is a trust boundary. Directory traversal, over-scoped tokens, and missing audit trails are not edge cases; they're the default failure mode at scale.
+Agents now touch filesystems, databases, and internal APIs through Model Context Protocol servers. Directory traversal, over-scoped tokens, and missing audit trails are not edge cases — they are the default failure mode when MCP scales.
 
-## The approach
+## What I built
 
-I built an enterprise MCP server with three non-negotiable properties:
+An enterprise MCP server with three non-negotiable properties:
 
-1. **Absolute path sandboxing** — every filesystem operation resolves against a fixed root; `../` traversal triggers immediate abort with `INVALID_PARAMS`
-2. **Read-only database enforcer** — PostgreSQL client rejects write operations at the protocol layer
-3. **Stdio JSON-RPC transport** with Docker isolation for deployment
+1. **Absolute path sandboxing** — every filesystem operation resolves against a fixed root; `../` triggers immediate abort
+2. **Read-only database enforcement** at the protocol layer
+3. **Docker-isolated stdio transport** for deployment
 
-The security validator is formalized: resolved path must remain a prefix of the sandbox root, or execution halts.
+Security checks must be invisible to latency:
 
-## Proof
-
-| Operation | Latency | Memory |
-|---|---|---|
-| Handshake | 1.8ms | 12.4MB |
-| Path boundary check | 0.05ms | 0.001MB |
-| DB query (read-only) | 12.3ms | 4.2MB |
-
-Sub-millisecond boundary assertions mean security checks don't become the bottleneck — they become invisible infrastructure.
+| Operation | Latency |
+|---|---|
+| Handshake | 1.8ms |
+| Path boundary check | **0.05ms** |
+| DB query (read-only) | 12.3ms |
 
 ## Stack
 

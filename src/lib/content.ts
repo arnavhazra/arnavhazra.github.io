@@ -3,6 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { compileMDX } from "next-mdx-remote/rsc";
 
+import { contentMetaSchema } from "./content-schema";
 import type { ContentMeta } from "./site";
 
 const contentRoot = path.join(process.cwd(), "content");
@@ -28,7 +29,8 @@ export function getCollectionMeta(collection: "work" | "writing") {
         "utf8",
       );
       const { data } = matter(raw);
-      return { slug, ...(data as ContentMeta) };
+      const parsed = contentMetaSchema.parse(data);
+      return { slug, ...parsed };
     })
     .sort(
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
@@ -46,9 +48,34 @@ export async function getCompiledMdx(collection: "work" | "writing", slug: strin
     options: { parseFrontmatter: true },
   });
 
+  contentMetaSchema.parse(frontmatter);
+
   return { content, meta: frontmatter };
 }
 
 export function getAllContentPaths(collection: "work" | "writing") {
   return getSlugs(collection).map((slug) => ({ slug }));
+}
+
+export function validateAllContent() {
+  const collections = ["work", "writing"] as const;
+  const slugs: string[] = [];
+
+  for (const collection of collections) {
+    for (const slug of getSlugs(collection)) {
+      if (slugs.includes(slug)) {
+        throw new Error(`Duplicate slug: ${slug}`);
+      }
+      slugs.push(slug);
+
+      const raw = fs.readFileSync(
+        path.join(contentRoot, collection, `${slug}.mdx`),
+        "utf8",
+      );
+      const { data } = matter(raw);
+      contentMetaSchema.parse(data);
+    }
+  }
+
+  return { count: slugs.length, slugs };
 }
