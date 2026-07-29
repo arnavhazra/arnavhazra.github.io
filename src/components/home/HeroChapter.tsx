@@ -37,9 +37,9 @@ export function HeroChapter() {
     <section
       ref={sectionRef}
       id="hero-chapter"
-      className="hero-gradient relative flex min-h-[100svh] flex-col justify-end overflow-hidden"
+      className="hero-gradient relative flex min-h-[100svh] flex-col justify-center overflow-hidden"
     >
-      <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 pt-28 md:pb-24 md:pt-32">
+      <div className="relative mx-auto w-full max-w-6xl px-6 py-28 md:py-32">
         <KineticHeadline pinTarget="#hero-chapter" />
         <div className="mt-10">
           <Magnetic>

@@ -42,17 +42,15 @@ export function KineticHeadline({ pinTarget }: KineticHeadlineProps) {
     const line2Chars = line2Ref.current?.querySelectorAll(".kinetic-char") ?? [];
 
     const ctx = gsap.context(() => {
-      // Brand stays visible — animate transform only, never opacity:0
+      // Brand stays painted — mild rise only, no clip/hide
       gsap.fromTo(
         line1Chars,
-        { yPercent: 110, rotate: 2 },
+        { y: 28 },
         {
-          yPercent: 0,
-          rotate: 0,
-          duration: 1.05,
-          stagger: 0.028,
+          y: 0,
+          duration: 0.9,
+          stagger: 0.022,
           ease: "power3.out",
-          clearProps: "rotate",
         },
       );
       gsap.fromTo(
@@ -118,22 +116,20 @@ export function KineticHeadline({ pinTarget }: KineticHeadlineProps) {
 
   return (
     <div ref={containerRef} className="relative">
-      <h1 className="font-display text-[clamp(4rem,14vw,11rem)] leading-[0.88] tracking-[-0.035em]">
-        <span className="block overflow-hidden pb-[0.06em]">
-          <span
-            ref={line1Ref}
-            className="block"
-            style={{
-              fontVariationSettings: '"wght" 520, "opsz" 96, "SOFT" 10',
-            }}
-          >
-            {splitText(siteConfig.name)}
-          </span>
+      <h1 className="font-display text-[clamp(3.5rem,12vw,9.5rem)] leading-[0.9] tracking-[-0.035em]">
+        <span
+          ref={line1Ref}
+          className="block"
+          style={{
+            fontVariationSettings: '"wght" 520, "opsz" 96, "SOFT" 10',
+          }}
+        >
+          {splitText(siteConfig.name)}
         </span>
-        <span className="mt-5 block overflow-hidden md:mt-8">
+        <span className="mt-4 block overflow-hidden md:mt-6">
           <span
             ref={line2Ref}
-            className="block max-w-[16ch] text-[clamp(1.5rem,3.8vw,3rem)] leading-[1.08] tracking-[-0.025em] text-muted"
+            className="block max-w-[16ch] text-[clamp(1.35rem,3.2vw,2.5rem)] leading-[1.1] tracking-[-0.025em] text-muted"
           >
             {splitText(siteConfig.tagline)}
           </span>
